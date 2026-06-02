@@ -1,3 +1,18 @@
+import urllib.request
+import os
+
+# 인터넷에서 무료 나눔고딕 폰트를 Streamlit 서버 안으로 다운로드 (보안 프로그램 안 걸림!)
+if not os.path.exists("NanumGothic.ttf"):
+    urllib.request.urlretrieve("https://github.com/google/fonts/raw/main/ofl/nanumgothic/NanumGothic-Regular.ttf", "NanumGothic.ttf")
+if not os.path.exists("NanumGothic-Bold.ttf"):
+    urllib.request.urlretrieve("https://github.com/google/fonts/raw/main/ofl/nanumgothic/NanumGothic-Bold.ttf", "NanumGothic-Bold.ttf")
+
+# 그다음 경로 설정 부문은 원래대로 아래처럼 놔두시면 됩니다!
+BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+JSON_KEY_FILE = os.path.join(BASE_PATH, "key.json")
+LOGO_IMAGE_PATH = os.path.join(BASE_PATH, "logo.png")
+FONT_PATH = "NanumGothic.ttf"
+FONT_BOLD_PATH = "NanumGothic-Bold.ttf"
 import streamlit as st
 import pandas as pd
 import gspread
@@ -18,8 +33,10 @@ from reportlab.lib import colors
 BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 JSON_KEY_FILE = os.path.join(BASE_PATH, "key.json")
 LOGO_IMAGE_PATH = os.path.join(BASE_PATH, "logo.png")
-FONT_PATH = "NanumGothic.ttf"  # 서버용 기본 나눔고딕 설정 (아래 설명 참고)
-FONT_BOLD_PATH = "NanumGothic-Bold.ttf"
+
+# 🌟 파일 업로드 없이 리눅스 서버에 내장된 한글 폰트를 직접 지정합니다.
+FONT_PATH = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf" 
+FONT_BOLD_PATH = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 
 SHEET_ID = "1EiaKCUJU9O5ajNzUwVOq542aVc8CTw8oFbLaeI9xeHI"
 FOLDER_ID = "1INlxagsBpkYmm4rGM2CqB2wtM_oa6EAW"

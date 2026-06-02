@@ -15,11 +15,11 @@ from reportlab.lib.utils import ImageReader
 from reportlab.lib import colors
 
 # --- 1. 경로 및 설정 ---
-BASE_PATH = r"C:\Users\DW-PC\Desktop\PB_project"
+BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 JSON_KEY_FILE = os.path.join(BASE_PATH, "key.json")
-LOGO_IMAGE_PATH = os.path.join(BASE_PATH, "logo.png") 
-FONT_PATH = r"C:\Windows\Fonts\malgun.ttf" 
-FONT_BOLD_PATH = r"C:\Windows\Fonts\malgunbd.ttf" 
+LOGO_IMAGE_PATH = os.path.join(BASE_PATH, "logo.png")
+FONT_PATH = "NanumGothic.ttf"  # 서버용 기본 나눔고딕 설정 (아래 설명 참고)
+FONT_BOLD_PATH = "NanumGothic-Bold.ttf"
 
 SHEET_ID = "1EiaKCUJU9O5ajNzUwVOq542aVc8CTw8oFbLaeI9xeHI"
 FOLDER_ID = "1INlxagsBpkYmm4rGM2CqB2wtM_oa6EAW"

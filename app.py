@@ -24,8 +24,8 @@ if not os.path.exists(FONT_PATH):
         font_url = "https://github.com/google/fonts/raw/main/ofl/nanumgothic/NanumGothic-Regular.ttf"
         urllib.request.urlretrieve(font_url, FONT_PATH)
 
-# 사용자가 보내주신 고유 ID 반영 (교정 완료)
-SHEET_ID = "1EiaKCUJU9O5ajNzUwVOq542aVc8CTw8oFbLaeI9xeHI"
+# 사용자가 보내주신 고유 ID 반영
+SHEET_ID = "1EiaKCUJU905ajNzUwVOq542aVc8CTw8oFbLaeI9xeHI"
 FOLDER_ID = "1INlxagsBpkYmm4rGM2CqB2wtM_oa6EAW"
 
 # --- 2. 폰트 등록 ---
@@ -122,7 +122,7 @@ def create_pdf(dataframe):
     c = canvas.Canvas(pdf_filename, pagesize=A4)
     width, height = A4
     
-    # 상단 배너 베이지색 디자인
+    # 상단 배너 디자인
     c.setFillColor(colors.HexColor("#F7F3E9"))
     c.rect(0, height - 80, width, 80, fill=1, stroke=0)
     
@@ -156,4 +156,42 @@ def create_pdf(dataframe):
             y_pos = height - 50
             
         cat = str(row.get("카테고리", ""))
-        p_name = str(row.get("품목명(수정가능)", row.get("품목명
+        
+        # [안전 조치] 줄바꿈을 통해 가독성을 높이고 잘림 에러 방지
+        p_name = str(
+            row.get("품목명(수정가능)", row.get("품목명", ""))
+        )
+        
+        spec = str(row.get("규격", ""))
+        storage = str(row.get("보관방법", ""))
+        
+        c.drawString(50, y_pos, cat)
+        c.drawString(130, y_pos, p_name[:30])
+        c.drawString(350, y_pos, spec)
+        c.drawString(480, y_pos, storage)
+        
+        # 구분선
+        c.setStrokeColor(colors.HexColor("#E0E0E0"))
+        c.setLineWidth(0.5)
+        c.line(40, y_pos - 5, width - 40, y_pos - 5)
+        
+        y_pos -= 25
+        
+    c.save()
+    return pdf_filename
+
+# --- 7. 다운로드 버튼 ---
+st.write("---")
+if st.button("🖨️ 선택한 품목으로 카탈로그 PDF 만들기"):
+    if len(selected_items) == 0:
+        st.warning("선택된 품목이 없습니다. 표 왼쪽에 체크박스를 선택해 주세요.")
+    else:
+        with st.spinner("PDF를 생성하는 중입니다..."):
+            pdf_file = create_pdf(selected_items)
+            with open(pdf_file, "rb") as f:
+                st.download_button(
+                    label="💾 생성된 PDF 다운로드 받기",
+                    data=f,
+                    file_name="PB_Catalog_Fix.pdf",
+                    mime="application/pdf"
+                )
